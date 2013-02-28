@@ -97,4 +97,7 @@ enum {
 /** set event handler priority. By default it is: kCCMenuTouchPriority */
 -(void) setHandlerPriority:(NSInteger)newPriority;
 
+
+-(CCMenuItem *) itemForTouch: (UITouch *) touch;
+
 @end
