@@ -949,4 +949,9 @@
 	return texture_;
 }
 
+- (CGSize) contentSize
+{
+    return CGSizeMake(contentSize_.width * self.scaleX, contentSize_.height * self.scaleY);
+}
+
 @end
