@@ -115,7 +115,7 @@ const NSInteger	kCCZoomActionTag = 0xc0c05002;
 
 -(void) activate
 {
-	if(isEnabled_&& block_ )
+	if(isEnabled_&& block_)
 		block_(self);
 }
 
