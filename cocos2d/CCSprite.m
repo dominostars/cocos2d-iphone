@@ -1,4 +1,4 @@
-/*
+ /*
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
  * Copyright (c) 2008-2010 Ricardo Quesada
@@ -947,11 +947,6 @@
 -(CCTexture2D*) texture
 {
 	return texture_;
-}
-
-- (CGSize) contentSize
-{
-    return CGSizeMake(contentSize_.width * self.scaleX, contentSize_.height * self.scaleY);
 }
 
 @end
