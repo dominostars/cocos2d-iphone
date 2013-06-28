@@ -62,6 +62,7 @@
 #import "CCActionProgressTimer.h"
 #import "CCActionPageTurn3D.h"
 #import "CCActionCatmullRom.h"
+#import "CCActionColor.h"
 
 #import "CCAnimation.h"
 #import "CCAnimationCache.h"
