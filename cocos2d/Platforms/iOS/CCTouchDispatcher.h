@@ -114,6 +114,8 @@ struct ccTouchHandlerHelperData {
  the higher the priority */
 -(void) setPriority:(int) priority forDelegate:(id) delegate;
 
+@property (readonly) NSArray *targetedDelegates;
+
 NSComparisonResult sortByPriority(id first, id second, void *context);
 @end
 

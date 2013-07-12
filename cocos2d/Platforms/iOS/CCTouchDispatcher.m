@@ -336,6 +336,18 @@ NSComparisonResult sortByPriority(id first, id second, void *context)
 	if( dispatchEvents )
 		[self touches:touches withEvent:event withTouchType:kCCTouchCancelled];
 }
+
+- (NSArray *)targetedDelegates
+{
+    NSMutableArray *allDelegates = [NSMutableArray arrayWithCapacity:targetedHandlers.count];
+    for (CCTouchHandler *touchHandler in targetedHandlers)
+    {
+        [allDelegates addObject:touchHandler.delegate];
+    }
+    
+    return allDelegates;
+}
+
 @end
 
 #endif // __CC_PLATFORM_IOS
