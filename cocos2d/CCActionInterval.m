@@ -1352,11 +1352,11 @@ static inline CGFloat bezierat( float a, float b, float c, float d, ccTime t )
 	for( NSUInteger i=nextFrame_; i < numberOfFrames; i++ ) {
 		NSNumber *splitTime = [splitTimes_ objectAtIndex:i];
 
-		if( [splitTime floatValue] <= t ) {
+		if( [splitTime floatValue] <= t && ( i == numberOfFrames - 1 || [[splitTimes_ objectAtIndex:i + 1] floatValue] > t)) {
 			CCAnimationFrame *frame = [frames objectAtIndex:i];
 			frameToDisplay = [frame spriteFrame];
 			[(CCSprite*)target_ setDisplayFrame: frameToDisplay];
-			
+            
 			NSDictionary *dict = [frame userInfo];
 			if( dict )
 				[[NSNotificationCenter defaultCenter] postNotificationName:CCAnimationFrameDisplayedNotification object:target_ userInfo:dict];
