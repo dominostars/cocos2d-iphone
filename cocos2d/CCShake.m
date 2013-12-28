@@ -82,7 +82,7 @@
 - (void) stop
 {
     // undo the last shake
-    [target_ setPosition:ccpSub(((CCNode*)target_).position, last)];
+    [_target setPosition:ccpSub(((CCNode*)_target).position, last)];
     
     [super stop];
 }
@@ -108,7 +108,7 @@
     CGPoint new = ccp((CCRANDOM_0_1()*amplitude.x*2) - amplitude.x,(CCRANDOM_0_1()*amplitude.y*2) - amplitude.y);
     
     // simultaneously un-move the last shake and move the next shake
-    [target_ setPosition:ccpAdd(ccpSub(((CCNode*)target_).position, last),new)];
+    [_target setPosition:ccpAdd(ccpSub(((CCNode*)_target).position, last),new)];
     
     // store the current shake value so it can be un-done
     last = new;

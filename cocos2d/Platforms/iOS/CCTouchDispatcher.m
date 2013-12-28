@@ -74,6 +74,46 @@
 //
 // handlers management
 //
+#pragma mark TouchDispatcher - Helpers
+-(BOOL) removeDelegate:(id)delegate fromQueue:(NSMutableArray*)queue
+{
+	id handlerToRemove = nil;
+	
+	for( id handlerOrDelegate in queue ) {
+		
+		if( [handlerOrDelegate isKindOfClass:[CCTouchHandler class]] ) {
+			// it is a handler
+			if (delegate == [handlerOrDelegate delegate]) {
+				handlerToRemove = handlerOrDelegate;
+				break;
+			}
+		} else {
+			// it is a delegate
+			if (delegate == handlerOrDelegate) {
+				handlerToRemove = handlerOrDelegate;
+				break;
+			}
+		}
+	}
+	
+	if( handlerToRemove ) {
+		[queue removeObject:handlerToRemove];
+		return YES;
+	}
+
+	return NO;
+}
+
+- (NSArray *)targetedDelegates
+{
+    NSMutableArray *allDelegates = [NSMutableArray arrayWithCapacity:targetedHandlers.count];
+    for (CCTouchHandler *touchHandler in targetedHandlers)
+    {
+        [allDelegates addObject:touchHandler.delegate];
+    }
+    
+    return allDelegates;
+}
 
 #pragma mark TouchDispatcher - Add Hanlder
 
@@ -90,25 +130,29 @@
 	[array insertObject:handler atIndex:i];
 }
 
--(void) addStandardDelegate:(id<CCStandardTouchDelegate>) delegate priority:(int)priority
+-(void) addStandardDelegate:(id<CCTouchAllAtOnceDelegate>) delegate priority:(int)priority
 {
 	CCTouchHandler *handler = [CCStandardTouchHandler handlerWithDelegate:delegate priority:priority];
 	if( ! locked ) {
 		[self forceAddHandler:handler array:standardHandlers];
 	} else {
-		[handlersToAdd addObject:handler];
-		toAdd = YES;
+		if( ! [self removeDelegate:delegate fromQueue:handlersToRemove] ) {
+			[handlersToAdd addObject:handler];
+			toAdd = YES;
+		}
 	}
 }
 
--(void) addTargetedDelegate:(id<CCTargetedTouchDelegate>) delegate priority:(int)priority swallowsTouches:(BOOL)swallowsTouches
+-(void) addTargetedDelegate:(id<CCTouchOneByOneDelegate>) delegate priority:(int)priority swallowsTouches:(BOOL)swallowsTouches
 {
 	CCTouchHandler *handler = [CCTargetedTouchHandler handlerWithDelegate:delegate priority:priority swallowsTouches:swallowsTouches];
 	if( ! locked ) {
 		[self forceAddHandler:handler array:targetedHandlers];
 	} else {
-		[handlersToAdd addObject:handler];
-		toAdd = YES;
+		if( ! [self removeDelegate:delegate fromQueue:handlersToRemove] ) {
+			[handlersToAdd addObject:handler];
+			toAdd = YES;
+		}
 	}
 }
 
@@ -141,8 +185,10 @@
 	if( ! locked ) {
 		[self forceRemoveDelegate:delegate];
 	} else {
-		[handlersToRemove addObject:delegate];
-		toRemove = YES;
+		if( ! [self removeDelegate:delegate fromQueue:handlersToAdd] ) {
+			[handlersToRemove addObject:delegate];
+			toRemove = YES;
+		}
 	}
 }
 
@@ -336,18 +382,6 @@ NSComparisonResult sortByPriority(id first, id second, void *context)
 	if( dispatchEvents )
 		[self touches:touches withEvent:event withTouchType:kCCTouchCancelled];
 }
-
-- (NSArray *)targetedDelegates
-{
-    NSMutableArray *allDelegates = [NSMutableArray arrayWithCapacity:targetedHandlers.count];
-    for (CCTouchHandler *touchHandler in targetedHandlers)
-    {
-        [allDelegates addObject:touchHandler.delegate];
-    }
-    
-    return allDelegates;
-}
-
 @end
 
 #endif // __CC_PLATFORM_IOS

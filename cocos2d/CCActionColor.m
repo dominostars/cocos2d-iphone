@@ -34,12 +34,12 @@
 	[super startWithTarget:aTarget];
     NSAssert([aTarget conformsToProtocol:@protocol(CCRGBAProtocol)], @"Running color action on target with no color attribute");
     
-    startColor_ = [(id<CCRGBAProtocol>)target_ color];
+    startColor_ = [(id<CCRGBAProtocol>)_target color];
 }
 
 -(void) update: (ccTime) t
 {
-    [(id<CCRGBAProtocol>)target_ setColor:ccc3(startColor_.r + (endColor_.r - startColor_.r) * t,
+    [(id<CCRGBAProtocol>)_target setColor:ccc3(startColor_.r + (endColor_.r - startColor_.r) * t,
                                                startColor_.g + (endColor_.g - startColor_.g) * t,
                                                startColor_.b + (endColor_.b - startColor_.b) * t)];
 }
