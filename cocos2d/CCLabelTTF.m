@@ -128,7 +128,7 @@
 		_hAlignment = alignment;
 		_vAlignment = vertAlignment;
 		_fontName = [[self getFontName: name] copy];
-		_fontSize = size;
+		_fontSize = (([[CCConfiguration sharedConfiguration] runningDevice] == kCCDeviceiPadRetinaDisplay || [[CCConfiguration sharedConfiguration] runningDevice] == kCCDeviceiPad) ? size * 2 : size);
 		_lineBreakMode = lineBreakMode;
 
 		[self setString:str];
